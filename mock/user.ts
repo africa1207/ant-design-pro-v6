@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-const waitTime = (time: number = 100) => {
+export const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
@@ -29,7 +29,7 @@ const getAccess = () => {
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
-  'GET /api/currentUser': (req: Request, res: Response) => {
+  'GET /api/currentUser': async (req: Request, res: Response) => {
     if (!getAccess()) {
       res.status(401).send({
         data: {
@@ -44,7 +44,7 @@ export default {
     res.send({
       success: true,
       data: {
-        name: 'Serati Ma',
+        name: 'admin用户',
         avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
         userid: '00000001',
         email: 'antdesign@alipay.com',
@@ -81,6 +81,7 @@ export default {
         unreadCount: 11,
         country: 'China',
         access: getAccess(),
+        roles: [getAccess()],
         geographic: {
           province: {
             label: '浙江省',
@@ -117,41 +118,76 @@ export default {
       address: 'Sidney No. 1 Lake Park',
     },
   ],
+  'GET /api/getDicts': {
+    data: {
+      'user.gender': [
+        { label: '女', value: '0' },
+        { label: '男', value: '1' },
+        { label: '未知', value: '2' },
+      ],
+      'product.cate': [
+        { label: '网球', value: '0' },
+        { label: '足球', value: '1' },
+        { label: '乒乓球', value: '2' },
+        { label: '篮球', value: '3' },
+      ],
+      'position.addr': [
+        { label: '成都', value: '0' },
+        { label: '重庆', value: '1' },
+        { label: '武汉', value: '2' },
+        { label: '南京', value: '3' },
+        { label: '上海', value: '5' },
+      ],
+    },
+    success: true,
+  },
   'POST /api/login/account': async (req: Request, res: Response) => {
     const { password, username, type } = req.body;
     await waitTime(2000);
-    if (password === 'ant.design' && username === 'admin') {
+    if (password === '1' && username === 'admin') {
       res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
+        success: true,
+        data: {
+          token: 'admin_token',
+          type,
+          currentAuthority: 'admin',
+        },
       });
       access = 'admin';
       return;
     }
-    if (password === 'ant.design' && username === 'user') {
+    if (password === '1' && username === 'user') {
       res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'user',
+        success: true,
+        data: {
+          token: 'user_token',
+          type,
+          currentAuthority: 'user',
+        },
       });
       access = 'user';
       return;
     }
     if (type === 'mobile') {
       res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
+        success: true,
+        data: {
+          token: 'mobile_admin_token',
+          type,
+          currentAuthority: 'guest',
+        },
       });
       access = 'admin';
       return;
     }
 
     res.send({
-      status: 'error',
-      type,
-      currentAuthority: 'guest',
+      success: false,
+      data: {
+        type,
+        currentAuthority: 'guest',
+      },
+      errorMessage: '错误',
     });
     access = 'guest';
   },

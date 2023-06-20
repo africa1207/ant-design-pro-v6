@@ -15,9 +15,10 @@ const Settings: ProLayoutProps & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: '成都交子金控集团',
   pwa: true,
-  logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  logo: '/logo.png', // 放入public中的静态资源图片打包后会直接cp到dist目录，故此处直接使用/logo.png
+  // https://www.iconfont.cn/ 配置iconfont，便于routes中使用icon，必须以icon-开头
   iconfontUrl: '',
   token: {
     // 参见ts声明，demo 见文档，通过token 修改样式

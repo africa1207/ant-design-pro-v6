@@ -9,12 +9,18 @@ const { REACT_APP_ENV = 'dev' } = process.env;
 
 export default defineConfig({
   /**
+   * 在 config 外的非 node 环境文件中使用REACT_APP_ENV
+   */
+  define: {
+    REACT_APP_ENV: REACT_APP_ENV || false,
+    TOKEN_KEY: 'token',
+  },
+  /**
    * @name 开启 hash 模式
    * @description 让 build 之后的产物包含 hash 后缀。通常用于增量发布和避免浏览器加载缓存。
    * @doc https://umijs.org/docs/api/config#hash
    */
   hash: true,
-
   /**
    * @name 兼容性设置
    * @description 设置 ie11 不一定完美兼容，需要检查自己使用的所有依赖
@@ -76,9 +82,9 @@ export default defineConfig({
    * @name layout 插件
    * @doc https://umijs.org/docs/max/layout-menu
    */
-  title: 'Ant Design Pro',
+  title: '成都交子金控集团',
   layout: {
-    locale: true,
+    locale: false,
     ...defaultSettings,
   },
   /**
@@ -89,17 +95,6 @@ export default defineConfig({
   moment2dayjs: {
     preset: 'antd',
     plugins: ['duration'],
-  },
-  /**
-   * @name 国际化插件
-   * @doc https://umijs.org/docs/max/i18n
-   */
-  locale: {
-    // default zh-CN
-    default: 'zh-CN',
-    antd: true,
-    // default true, when it is true, will use `navigator.language` overwrite default
-    baseNavigator: true,
   },
   /**
    * @name antd 插件
@@ -125,7 +120,10 @@ export default defineConfig({
    */
   headScripts: [
     // 解决首次加载时白屏的问题
-    { src: '/scripts/loading.js', async: true },
+    {
+      src: '/scripts/loading.js',
+      async: true,
+    },
   ],
   //================ pro 插件配置 =================
   presets: ['umi-presets-pro'],
@@ -152,4 +150,11 @@ export default defineConfig({
     strategy: 'normal',
   },
   requestRecord: {},
+  scripts: [],
+  externals: {},
+  // outputPath: 'dist',
+  // publicPath: '/',
+  // chainWebpack: (config, { env, webpack }) => {
+  //   return config;
+  // },
 });

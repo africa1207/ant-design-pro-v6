@@ -23,6 +23,7 @@ const genList = (current: number, pageSize: number) => {
       status: Math.floor(Math.random() * 10) % 4,
       updatedAt: moment().format('YYYY-MM-DD'),
       createdAt: moment().format('YYYY-MM-DD'),
+      dateRageAt: [moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
       progress: Math.ceil(Math.random() * 100),
     });
   }

@@ -1,6 +1,5 @@
 // @ts-ignore
 /* eslint-disable */
-
 declare namespace API {
   type CurrentUser = {
     name?: string;
@@ -15,6 +14,7 @@ declare namespace API {
     unreadCount?: number;
     country?: string;
     access?: string;
+    role?: string[];
     geographic?: {
       province?: { label?: string; key?: string };
       city?: { label?: string; key?: string };
@@ -22,10 +22,36 @@ declare namespace API {
     address?: string;
     phone?: string;
   };
+  type MenuRouteItem = {
+    name: string;
+    path: string;
+    icon?: any;
+    routes?: MenuRouteItem[];
+    parentKeys?: string[];
+    key?: string;
+    access?: string;
+    hideChildrenInMenu?: boolean;
+    hideInMenu?: boolean;
+    hideInBreadcrumb?: boolean;
+    headerRender?: boolean;
+    footerRender?: boolean;
+    menuRender?: boolean;
+    menuHeaderRender?: boolean;
+    parentKeys?: boolean;
+    flatMenu?: boolean;
+    layout?: 'side' | 'top' | 'mix';
+    roles?: string[];
+    redirect?: string;
+  };
+  type DictsType = {
+    [dictKey: string]: DictItem[];
+  };
+  type DictItem = { label: string; value: string };
 
   type LoginResult = {
     status?: string;
     type?: string;
+    token: string;
     currentAuthority?: string;
   };
 
@@ -46,6 +72,7 @@ declare namespace API {
     status?: number;
     updatedAt?: string;
     createdAt?: string;
+    dateRageAt?: string[];
     progress?: number;
   };
 

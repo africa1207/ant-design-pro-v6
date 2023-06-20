@@ -1,36 +1,33 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
+import localforage from 'localforage';
 
-// 错误处理方案： 错误类型
-enum ErrorShowType {
+export enum ErrorShowType {
   SILENT = 0,
   WARN_MESSAGE = 1,
   ERROR_MESSAGE = 2,
   NOTIFICATION = 3,
   REDIRECT = 9,
 }
-// 与后端约定的响应数据格式
-interface ResponseStructure {
-  success: boolean;
-  data: any;
-  errorCode?: number;
-  errorMessage?: string;
-  showType?: ErrorShowType;
-}
-
+// 请求状态对象
+const requestStatus: any = {};
+// 避免重复请求间隔
+const requestDelayTime = 1 * 1000;
 /**
  * @name 错误处理
  * pro 自带的错误处理， 可以在这里做自己的改动
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const errorConfig: RequestConfig = {
+  baseURL: API_URL,
+  timeout: 10 * 1000, // 超时时间
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
     // 错误抛出
     errorThrower: (res) => {
       const { success, data, errorCode, errorMessage, showType } =
-        res as unknown as ResponseStructure;
+        res as unknown as Common.ResponseStructure<any>;
       if (!success) {
         const error: any = new Error(errorMessage);
         error.name = 'BizError';
@@ -43,7 +40,7 @@ export const errorConfig: RequestConfig = {
       if (opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
       if (error.name === 'BizError') {
-        const errorInfo: ResponseStructure | undefined = error.info;
+        const errorInfo: Common.ResponseStructure<any> | undefined = error.info;
         if (errorInfo) {
           const { errorMessage, errorCode } = errorInfo;
           switch (errorInfo.showType) {
@@ -87,10 +84,68 @@ export const errorConfig: RequestConfig = {
 
   // 请求拦截器
   requestInterceptors: [
+    // 为请求header增加token
+    async (config: RequestOptions) => {
+      const token = await localforage.getItem(TOKEN_KEY);
+      // 请求header增加token
+      if (token) {
+        config.headers = {
+          ...(config.headers as Record<string, any>),
+          [TOKEN_KEY]: token,
+        };
+      }
+      return { ...config };
+    },
+    // 避免指定短时间内重复请求
     (config: RequestOptions) => {
-      // 拦截请求配置，进行个性化处理。
-      const url = config?.url?.concat('?token = 123');
-      return { ...config, url };
+      // 检查请求状态对象中是否已经存在这个请求
+      const requestKey = JSON.stringify({
+        method: config.method,
+        url: config.url,
+        params: config.params,
+        data: config.data,
+      });
+
+      const now = Date.now();
+      if (
+        requestStatus[requestKey] &&
+        now - requestStatus[requestKey].timeStamp < requestDelayTime
+      ) {
+        // 如果已经存在这个请求，并且与上次请求的时间间隔小于指定时间，则直接返回一个 Promise 对象
+        return new Promise((resolve, reject) => {
+          requestStatus[requestKey].promises.push({ resolve, reject });
+        });
+      }
+
+      // 如果不存在这个请求，或者与上次请求的时间间隔大于等于指定时间，则将其加入到请求状态对象中
+      const promise = new Promise((resolve, reject) => {
+        requestStatus[requestKey] = {
+          promises: [{ resolve, reject }],
+          timeStamp: now,
+        };
+      });
+
+      // 给当前请求增加一个 finally 方法，用于请求结束后清除请求状态对象中的数据
+      const originalFinally = config.finally;
+      config.finally = (callback: any) => {
+        promise.finally(() => {
+          delete requestStatus[requestKey];
+          if (originalFinally) {
+            originalFinally(callback);
+          } else {
+            callback();
+          }
+        });
+      };
+
+      // 给请求增加一个 cancel 方法，用于取消当前请求
+      config.cancel = () => {
+        promise.then(() => {
+          delete requestStatus[requestKey];
+        });
+      };
+
+      return { ...config };
     },
   ],
 
@@ -98,7 +153,7 @@ export const errorConfig: RequestConfig = {
   responseInterceptors: [
     (response) => {
       // 拦截响应数据，进行个性化处理
-      const { data } = response as unknown as ResponseStructure;
+      const { data } = response as unknown as Common.ResponseStructure<any>;
 
       if (data?.success === false) {
         message.error('请求失败！');

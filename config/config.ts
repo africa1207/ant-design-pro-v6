@@ -82,7 +82,7 @@ export default defineConfig({
    * @name layout 插件
    * @doc https://umijs.org/docs/max/layout-menu
    */
-  title: '成都交子金控集团',
+  title: '测试系统',
   layout: {
     locale: false,
     ...defaultSettings,

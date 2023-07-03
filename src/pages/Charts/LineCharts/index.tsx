@@ -1,7 +1,6 @@
 import React from 'react';
 import { Line } from '@ant-design/charts';
 import style from './index.less';
-import MySVG from '@/components/MySVG';
 import { PageContainer } from '@ant-design/pro-components';
 
 const Page: React.FC = () => {
@@ -28,7 +27,6 @@ const Page: React.FC = () => {
   };
   return (
     <PageContainer title={false}>
-      <MySVG name="regions" size={200} />
       <h1 className={style.color}>line-charts</h1>
       <Line {...config} />
     </PageContainer>

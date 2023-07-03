@@ -8,5 +8,4 @@
 import Footer from './Footer';
 import { Question } from './RightContent';
 import { AvatarDropdown, AvatarName } from './RightContent/AvatarDropdown';
-import MySVG from './MySVG';
-export { Footer, Question, AvatarDropdown, AvatarName, MySVG };
+export { Footer, Question, AvatarDropdown, AvatarName };

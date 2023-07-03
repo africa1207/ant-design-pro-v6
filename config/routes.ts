@@ -11,23 +11,6 @@
  * https://v3.umijs.org/zh-CN/plugins/plugin-layout#%E6%89%A9%E5%B1%95%E7%9A%84%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE  支持扩展路由配置
  * @doc https://umijs.org/docs/guides/routes
  */
-/**
- * name:string 配置菜单的 name，如果配置了国际化，name 为国际化的 key。
- * icon:string 配置菜单的图标，默认使用 antd 的 icon 名，默认不适用二级菜单的 icon。
- * access:string 权限配置，需要预先配置权限
- * hideChildrenInMenu:true 用于隐藏不需要在菜单中展示的子路由。
- * hideInMenu:true 可以在菜单中不展示这个路由，包括子路由。
- * hideInBreadcrumb:true 可以在面包屑中不展示这个路由，包括子路由。
- * headerRender:false 当前路由不展示顶栏
- * footerRender:false 当前路由不展示页脚
- * menuRender: false 当前路由不展示菜单
- * menuHeaderRender: false 当前路由不展示菜单顶栏
- * parentKeys: string[] 当此节点被选中的时候也会选中 parentKeys 的节点
- * flatMenu 子项往上提，只是不展示父菜单
- * layout: 'side' | 'top' | 'mix' 导航菜单的位置,side 为正常模式，top菜单显示在顶部，mix 两种兼有
- */
-// 如果父级添加了canAccess，但routes中存在没添加canAccess属性的路由，一定要添加access: 'show',直接访问path没问题，但是刷新该path会出现403
-// 如果父级添加了canAccess，使用RoutePage的组件记得添加access: 'show'
 export default [
   {
     path: '/user',

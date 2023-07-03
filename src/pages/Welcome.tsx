@@ -41,6 +41,7 @@ const Welcome: React.FC = () => {
         <a
           key="editable"
           onClick={() => {
+            // @ts-ignore
             action?.startEditable?.(record.key);
           }}
         >

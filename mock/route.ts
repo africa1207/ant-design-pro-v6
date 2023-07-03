@@ -39,10 +39,10 @@ export default {
               path: '/charts/line-charts',
               name: '线性图表',
             },
-            {
-              path: '/charts/bar-charts',
-              name: '柱状图表',
-            },
+            // {
+            //   path: '/charts/bar-charts',
+            //   name: '柱状图表',
+            // },
           ],
         },
       ],

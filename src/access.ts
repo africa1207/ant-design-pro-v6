@@ -14,11 +14,11 @@ export default function access(
   // canAccess参数route是routes.ts中需要校验的route项
   function canAccess(route: API.MenuRouteItem) {
     /// 管理员角色直接返回 true
-    if (currentUser?.role?.includes('admin')) {
+    if (currentUser?.roles?.includes('admin')) {
       return true;
     }
     // 检查是否需要特定角色才能访问
-    if (route.roles && !route.roles.some((role) => currentUser?.role?.includes(role))) {
+    if (route.roles && !route.roles.some((role) => currentUser?.roles?.includes(role))) {
       return false;
     }
     // 检查是否在用户菜单中
@@ -41,7 +41,7 @@ export default function access(
     return false;
   }
   return {
-    canAdmin: currentUser && currentUser.role?.includes('admin'),
+    canAdmin: currentUser && currentUser.roles?.includes('admin'),
     canAccess,
     show: true,
   };

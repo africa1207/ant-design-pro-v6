@@ -1,6 +1,5 @@
 import { PageContainer } from '@ant-design/pro-components';
-import { useModel } from '@umijs/max';
-import { useLocation, Link } from 'umi';
+import { useModel, useLocation, Link } from '@umijs/max';
 import React, { memo, useMemo } from 'react';
 import { Row, Card, Col } from 'antd';
 

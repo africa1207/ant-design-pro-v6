@@ -9,7 +9,6 @@ import { errorConfig } from './requestErrorConfig';
 import { currentUser as queryCurrentUser, getMenuList } from '@/services/login';
 import FixMenultemlcon from '@/utils/FixMenultemlcon';
 import React from 'react';
-import { AvatarDropdown, AvatarName } from '@/components';
 import { getServerDicts } from '@/services/common';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';

@@ -14,17 +14,17 @@ export default {
           name: '欢迎页',
           icon: 'smile',
         },
-        {
-          path: '/admin',
-          name: '管理台',
-          icon: 'crown',
-          routes: [
-            {
-              path: '/admin/sub-page',
-              name: '子页面',
-            },
-          ],
-        },
+        // {
+        //   path: '/admin',
+        //   name: '管理台',
+        //   icon: 'crown',
+        //   routes: [
+        //     {
+        //       path: '/admin/sub-page',
+        //       name: '子页面',
+        //     },
+        //   ],
+        // },
         {
           name: '表格',
           icon: 'table',

@@ -186,47 +186,13 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <LockOutlined />,
                 }}
-                placeholder={'密码: ant.design'}
+                placeholder={'密码: 1'}
                 rules={[
                   {
                     required: true,
                     message: '密码是必填项！',
                   },
                 ]}
-              />
-              <ProFormText
-                name="uid"
-                fieldProps={{
-                  size: 'large',
-                }}
-                placeholder={'用户名: admin or user'}
-                rules={[
-                  {
-                    required: true,
-                    message: '验证码必填',
-                  },
-                ]}
-                addonAfter={(() => {
-                  return (
-                    <div
-                      style={{
-                        height: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <img
-                        style={{
-                          height: '40px',
-                        }}
-                        src="https://img1.baidu.com/it/u=413643897,2296924942&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500"
-                        onClick={() => {
-                          console.log(123);
-                        }}
-                      />
-                    </div>
-                  );
-                })()}
               />
             </>
           )}

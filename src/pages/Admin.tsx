@@ -4,7 +4,7 @@ import { Alert, Card, Typography } from 'antd';
 import React from 'react';
 const Admin: React.FC = () => {
   return (
-    <PageContainer content={' 这个页面只有 admin 权限才能查看'}>
+    <PageContainer>
       <Card>
         <Alert
           message={'更快更强的重型组件，已经发布。'}
